@@ -13,11 +13,18 @@ import concesionarioCoches.Concesionario;
 
 public class Ficheros {
 
+	/**
+	 * Patrón para validar la extensión de un archivo
+	 */
 	private static final Pattern PATTERN_EXTENSION = Pattern
 			.compile("^((\\w)+(\\.obj))$");
-	private static File archivo=new File("");
+	/**
+	 * Archivo con nombre por defecto (Sin_titulo)
+	 */
+	public static File archivo=new File("Sin_titulo");
 
 	/**
+	 * Getter de archivo
 	 * @return the archivo
 	 */
 	private static File getArchivo() {
@@ -25,79 +32,54 @@ public class Ficheros {
 	}
 
 	/**
+	 * Setter de archivo
 	 * @param archivo
 	 *            the archivo to set
 	 */
-	private static void setArchivo(String archivo) {
+	public static void setArchivo(String archivo) {
 		Ficheros.archivo = new File(archivo);
 	}
 
-
-	public static void guardar(Object objeto)
-			throws FileNotFoundException, IOException {
-		if (archivo.getPath().equalsIgnoreCase("")) {
-			((Concesionario) objeto).setModificado(false);
-			guardarComo(objeto, Teclado.leerCadena("Nombre del archivo: "));
-		} else {
-			try (ObjectOutputStream oos = new ObjectOutputStream(
-					new FileOutputStream(archivo))) {
-				oos.writeObject(objeto);
-				((Concesionario) objeto).setModificado(false);
-			}
-		}
-
-	}
-
-	public static Object abrirArchivo(Object objeto)
-			throws FileNotFoundException, IOException, ClassNotFoundException {
-		String fichero = Teclado.leerCadena("Nombre del archivo: ");
-		fichero = validarArchivo(fichero);
-		Object aux;
-		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(
-				fichero))) {
-			setArchivo((validarArchivo(fichero)));
-			aux = in.readObject();
-			return aux;
-		}
-	}
-	
-	public static void nuevoArchivo() {
-		setArchivo((validarArchivo("")));
-	}
-
-	private static String validarArchivo(String archivo) {
-		if (PATTERN_EXTENSION.matcher(archivo).matches()) {
+	/**
+	 * Valida el nombre del archivo dependiendo de un patrón
+	 * @param archivo Archivo que deseas validar
+	 * @return Archivo con la extensión (.obj)
+	 */
+	public static File validarArchivo(File archivo) {
+		if (PATTERN_EXTENSION.matcher(archivo.getName()).matches()) {
 			return archivo;
 		} else {
-			archivo +=".obj";
-		}
-		return archivo;
-	}
-
-	private static boolean deseaContinuar(File archivo) {
-		char opcion;
-		do {
-			opcion = Teclado.leerCaracter("El archivo " + archivo
-					+ " ya existe. ¿Desea Sobreescribirlo?(S/N)");
-			opcion = Character.toUpperCase(opcion);
-		} while (!(opcion == 'S' || opcion == 'N'));
-		if (opcion == 'S') {
-			return true;
-		}
-		return false;
-	}
-
-
-	public static void guardarComo(Object objeto, String nombreArchivo
-			) throws FileNotFoundException, IOException {
-		File archivo = new File(validarArchivo(nombreArchivo));
-		Boolean archivoEx = archivo.exists();
-		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(
-				archivo));
-		if (!archivoEx) {
-			oos.writeObject(objeto);
-		} else {
-			deseaContinuar(archivo);
+			setArchivo(archivo.getAbsolutePath() + ".obj");
+			return archivo;
 		}
 	}
+
+	/**
+	 * Guarda la información en un archivo al cual se le define el nombre
+	 * @param objeto Objeto que deseas guardar
+	 * @param nombre Nombre del archivo
+	 * @throws IOException
+	 */
+	public static void guardarComo(Object objeto, File nombre)
+			throws IOException {
+		archivo = nombre;
+		try (ObjectOutputStream out = new ObjectOutputStream(
+				new FileOutputStream(archivo))) {
+			out.writeObject(objeto);
+		}
+	}
+
+	/**
+	 * Guarda la informacion del parámetro en un archivo
+	 * @param objeto Objeto que desees guardar
+	 * @throws IOException
+	 */
+	public static void guardar(Object objeto) throws IOException {
+		try (ObjectOutputStream out = new ObjectOutputStream(
+				new FileOutputStream(archivo))) {
+			out.writeObject(objeto);
+		}
+	}
+
+
 }

@@ -22,6 +22,13 @@ public class Coche implements Serializable{
 	 */
 	private String matricula;
 	/**
+	 * @return the matricula
+	 */
+	public String getMatricula() {
+		return matricula;
+	}
+
+	/**
 	 * Variable donde se guarda el color del coche
 	 */
 	private Color color;
@@ -29,6 +36,13 @@ public class Coche implements Serializable{
 	 * Variable donde se guarda el tipo de modelo del coche
 	 */
 	private Modelo modelo;
+	/**
+	 * @return the modelo
+	 */
+	public Modelo getModelo() {
+		return modelo;
+	}
+
 	/**
 	 * Patron que verifica si la matricula introducida es valida o no
 	 */
@@ -102,7 +116,7 @@ public class Coche implements Serializable{
 	 * 
 	 * @return devuelve un color
 	 */
-	Color getColor() {
+	public Color getColor() {
 		return color;
 	}
 

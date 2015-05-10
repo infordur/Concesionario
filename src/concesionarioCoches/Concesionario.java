@@ -25,7 +25,7 @@ public class Concesionario implements Serializable{
 	/**
 	 * Lista de coches parametrizada de tipo coche
 	 */
-	private ArrayList<Coche> almacen = new ArrayList<Coche>();
+	public ArrayList<Coche> almacen = new ArrayList<Coche>();
 	/**
 	 * Nombre del concesionario
 	 */
@@ -47,13 +47,14 @@ public class Concesionario implements Serializable{
 	 * @throws MatriculaNoValodaException
 	 * @throws CocheYaExistenteException
 	 */
-	boolean annadir(String matricula, Color color, Modelo modelo)
+	public boolean annadir(String matricula, Color color, Modelo modelo)
 			throws MatriculaNoValodaException, ColorNoValidoException,
 			ModeloNoValidoException, CocheYaExistenteException {
 		Coche coche = new Coche(matricula, color, modelo);
-		if (almacen.contains(coche))
+		if (almacen.contains(coche)){
 			throw new CocheYaExistenteException("El coche ya existe");
-			setModificado(true);
+		}
+		setModificado(true);
 		return almacen.add(coche);
 	}
 
@@ -81,7 +82,7 @@ public class Concesionario implements Serializable{
 	 * @throws MatriculaNoValodaException
 	 * @throws CocheNoExistenteException
 	 */
-	boolean eliminar(String matricula) throws MatriculaNoValodaException,
+	public boolean eliminar(String matricula) throws MatriculaNoValodaException,
 			CocheNoExistenteException {
 		Coche coche = new Coche(matricula);
 		if (almacen.contains(coche)){
@@ -97,7 +98,7 @@ public class Concesionario implements Serializable{
 	 * 
 	 * @return el tamaño de la lista con un int
 	 */
-	int size() {
+	public int size() {
 		return almacen.size();
 	}
 
@@ -110,7 +111,7 @@ public class Concesionario implements Serializable{
 	 * @throws MatriculaNoValodaException
 	 * @throws CocheNoExistenteException
 	 */
-	Coche get(String matricula) throws MatriculaNoValodaException,
+	public Coche get(String matricula) throws MatriculaNoValodaException,
 			CocheNoExistenteException {
 		Coche coche = new Coche(matricula);
 		int index = almacen.indexOf(coche);
@@ -120,6 +121,22 @@ public class Concesionario implements Serializable{
 		throw new CocheNoExistenteException("El coche no existe");
 	}
 
+	/**
+	 * Devuelve el coche depenediendo el índice indicado
+	 * @param i
+	 * @return
+	 */
+	public Coche get(int i) {
+		if(almacen.isEmpty()){
+			return null;
+		}
+		else if(i<0 || i> almacen.size()-1){
+			return null;
+		}
+		else{
+			return almacen.get(i);
+		}
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -146,5 +163,7 @@ public class Concesionario implements Serializable{
 		}
 		return arrCochesColor;
 	}
+
+
 
 }
