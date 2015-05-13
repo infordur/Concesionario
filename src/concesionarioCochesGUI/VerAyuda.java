@@ -24,6 +24,7 @@ public class VerAyuda extends JDialog {
 	 * Create the dialog.
 	 */
 	public VerAyuda() {
+		//Modificamos el titulo de la ventana (Editado por Jesús López)
 		setTitle("ver Ayuda");
 		setModal(true);
 		setBounds(100, 100, 611, 414);
